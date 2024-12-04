@@ -14,11 +14,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const connection = mysql.createConnection({
-  host: ucka.veleri.hr,
-  user: dmudric,
-  password: 11,
-  database: dmudric
+  host: "ucka.veleri.hr", 
+  user: "dmudric",
+  password: "11",  
+  database: "dmudric"
 });
+
 
 app.use(express.urlencoded({ extended: true }));
  

@@ -9,6 +9,7 @@ const port = 3000;
 // Parser za JSON podatke
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 const connection = mysql.createConnection({
   host: "ucka.veleri.hr",
@@ -227,7 +228,26 @@ app.post("/api/rezervacija/vrati", (request, response) => {
     }
   );
 });
+// Ruta za dohvat svih rezervacija
+app.get("/api/rezervirane_knjige", (request, response) => {
+  const query = `
+    SELECT knjiga.naslov, knjiga.autor, korisnik.ime, korisnik.prezime, rezervacija.datum_rez
+    FROM rezervacija
+    JOIN knjiga ON rezervacija.knjiga = knjiga.id
+    JOIN korisnik ON rezervacija.korisnik = korisnik.id;
+  `;
 
-app.listen(port, () => {
-  console.log("Server running at port: " + port);
+  connection.query(query, (error, results) => {
+    if (error) {
+      console.error("Greška u SQL upitu:", error); // Logiramo grešku
+      return response.status(500).json({ message: "Greška prilikom dohvaćanja podataka" }); // Pošaljemo grešku klijentu i prekidamo izvršavanje
+    }
+    response.json(results); // Pošaljemo rezultate ako nema greške
+  });
+});
+
+
+
+app.listen(3000, () => {
+  console.log('API server running on http://localhost:3000');
 });

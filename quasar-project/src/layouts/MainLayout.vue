@@ -106,6 +106,18 @@ const linksList = [
     caption: 'Registrirajte se',
     icon: 'person_add',
     to: '/registracija'
+  },
+  {
+    title: 'Popis knjiga baza',
+    caption: 'Popis knjiga baza',
+    icon: 'book',
+    to: '/popisKnjigaBaza'
+  },
+  {
+    title: 'Rezervacija knjiga',
+    caption: 'Rezervacija knjiga',
+    icon: 'book',
+    to: '/rezervacija'
   }
 ]
 

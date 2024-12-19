@@ -7,6 +7,8 @@ const app = express();
 const port = 3000;
 
 // Parser za JSON podatke
+app.use(express.json());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -205,29 +207,6 @@ app.put("/api/korisnik/:id", (request, response) => {
     }
   );
 });
-app.post("/api/rezervacija/vrati", (request, response) => {
-  const { idRezervacija, datumVracanja } = request.body;
-
-  connection.query(
-    `INSERT INTO povijest_rezervacija (korisnik, knjiga, datum_rez, datum_vracanja)
-     SELECT korisnik, knjiga, datum_rez, ? 
-     FROM rezervacija 
-     WHERE id = ?`,
-    [datumVracanja, idRezervacija],
-    (error, results) => {
-      if (error) throw error;
-
-      connection.query(
-        "DELETE FROM rezervacija WHERE id = ?",
-        [idRezervacija],
-        (delError, delResults) => {
-          if (delError) throw delError;
-          response.send({ message: "Rezervacija vraćena i arhivirana.", affectedRows: delResults.affectedRows });
-        }
-      );
-    }
-  );
-});
 // Ruta za dohvat svih rezervacija
 app.get("/api/rezervirane_knjige", (request, response) => {
   const query = `
@@ -245,6 +224,18 @@ app.get("/api/rezervirane_knjige", (request, response) => {
     response.json(results); // Pošaljemo rezultate ako nema greške
   });
 });
+
+app.post("/api/unos_knjige", (req, res) => {
+  const data = req.body;
+  //naslo, autor, opis, slika, stanje
+  knjiga = [[data.naslov, data.autor, data.opis, data.stanje, data.slika]]
+  connection.query("INSERT INTO knjiga (naslov, autor, opis, stanje, slika) VALUES ?",
+    [knjiga], (error, results) => {
+      if (error) throw error;
+      res.send(results);
+    }
+  );
+})
 
 
 

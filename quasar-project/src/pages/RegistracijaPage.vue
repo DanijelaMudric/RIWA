@@ -5,13 +5,6 @@
     <q-input filled v-model="password" label="Lozinka" type="password" />
     <q-input filled v-model="email" label="Email" />
     <q-btn color="primary" label="Potvrdi" @click="registerUser" />
-
-    <h2>Rezervirane Knjige</h2>
-    <ul>
-      <li v-for="(rezervacija, index) in rezervacije" :key="index">
-        {{ rezervacija.naziv }} - {{ rezervacija.autor }}
-      </li>
-    </ul>
   </q-page>
 </template>
 
